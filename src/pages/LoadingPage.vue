@@ -1,5 +1,5 @@
 <template>
-  <f7-page name="home">
+  <f7-page name="LoadingPage">
     <!-- Top Navbar -->
     <f7-navbar>
       <f7-nav-title>My App</f7-nav-title>
@@ -16,16 +16,21 @@
         <f7-col></f7-col>
       </f7-row>
     </f7-block>
+
+    <a href="/predicting/"> go to Predicting page</a>
   </f7-page>
 </template>
 
 <script>
-import { f7, f7ready } from "framework7-vue";
+import { f7 } from 'framework7-vue';
 
 export default {
   methods: {
     alertOnClick() {
-      f7.dialog.alert("This is a Framework7 alert notification test.", "Alert") 
+      f7.dialog.alert('This is a Framework7 alert notification test.', 'Alert');
+    },
+    navigateToNext() {
+      f7.views.current.router.navigate('/predicting');
     },
   },
 };

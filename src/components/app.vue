@@ -15,22 +15,27 @@
   </f7-app>
 </template>
 <script>
-import { ref, onMounted } from "vue";
-import { f7, f7ready } from "framework7-vue";
+import { ref, onMounted } from 'vue';
+import { f7ready } from 'framework7-vue';
 
-import routes from "../js/routes.js";
+import routes from '../js/routes';
 
 export default {
   setup() {
     // Framework7 Parameters
     const f7params = {
-      name: "framework7-vue-minimal", // App name
-      theme: "auto", // Automatic theme detection
-      routes: routes, // App routes
+      name: 'framework7-vue-minimal', // App name
+      theme: 'auto', // Automatic theme detection
+      routes, // App routes
       navbar: {
         mdCenterTitle: true,
       },
     };
+
+    function helloWorld() {
+      console.log('Hello World!');
+    }
+
     onMounted(() => {
       f7ready(() => {
         // Call F7 APIs here
@@ -38,16 +43,12 @@ export default {
       });
     });
 
-    const text = ref("Right panel content goes here");
-
-    function helloWorld() {
-      console.log('Hello World!');
-    }
+    const text = ref('Right panel content goes here');
 
     return {
       f7params,
       text,
-      helloWorld
+      helloWorld,
     };
   },
 };
