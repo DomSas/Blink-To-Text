@@ -17,6 +17,7 @@
       <h3 class="loading-page__loading-text">
         Please wait until the app<br />finishes loading...
       </h3>
+      <video class="loading-page__video" id="video" playsinline></video>
 
       <p class="loading-page__app-info">
         Created by Asial Corporation<br />App Version: 1.0.0
@@ -27,15 +28,33 @@
 
 <script>
 import { f7 } from 'framework7-vue';
+import blinkCapture from '../js/blinkCapture';
 
 export default {
-  methods: {
-    alertOnClick() {
-      f7.dialog.alert('This is a Framework7 alert notification test.', 'Alert');
-    },
-    navigateToNext() {
-      f7.views.current.router.navigate('/predicting');
-    },
+  async mounted() {
+    const videoElement = document.querySelector('video');
+    let predictionStarted = false;
+
+    await blinkCapture.loadModel();
+    await blinkCapture.setUpCamera(videoElement);
+
+    const predict = async () => {
+      const result = await blinkCapture.getBlinkPrediction();
+      if (result) {
+        if (result.longBlink) {
+          console.log('long blink');
+        } else if (result.blink) {
+          console.log('short blink');
+        }
+      }
+      if (!predictionStarted) {
+        predictionStarted = true;
+        f7.views.current.router.navigate('/predicting');
+      }
+      requestAnimationFrame(predict);
+    };
+
+    predict();
   },
 };
 </script>
