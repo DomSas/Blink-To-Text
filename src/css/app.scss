@@ -41,6 +41,10 @@ $dark-grey: #616161;
         color: $dark-grey;
     }
 
+    &__video {
+        display: none;
+    }
+
     &__app-info {
         position: absolute;
         bottom: 10px;

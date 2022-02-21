@@ -22,14 +22,10 @@ export default {
       },
     };
 
-    function loadModel() {
-      console.log('Loading Model Started!');
-    }
-
     onMounted(() => {
-      f7ready(() => {
+      f7ready(async () => {
         // Call F7 APIs here
-        loadModel();
+
       });
     });
 
@@ -38,7 +34,6 @@ export default {
     return {
       f7params,
       text,
-      loadModel,
     };
   },
 };
