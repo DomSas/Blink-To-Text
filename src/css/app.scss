@@ -1,1 +1,51 @@
-/* Your app custom styles here */
+$dark-grey: #616161;
+
+@mixin page-container-style() {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+}
+
+.loading-page {
+    @include page-container-style();
+
+    justify-content: center;
+
+    &__heading {
+        margin: 0;
+        font-size: 50px;
+        font-weight: 500;
+    }
+
+    &__img {
+        max-width: 70%;
+    }
+    
+    &__spinner {
+        position: fixed;
+        left: 50.4%;
+        top: 50.6%;
+        transform: translate(-50%, -50%);
+
+        @media (max-width: 300px) {
+            display: none;
+          }
+    }
+
+    &__loading-text {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 400;
+        color: $dark-grey;
+    }
+
+    &__app-info {
+        position: absolute;
+        bottom: 10px;
+        font-size: 16px;
+        font-weight: 200;
+        color: $dark-grey;
+    }
+}

@@ -1,16 +1,20 @@
-
-import HomePage from '../pages/home.vue';
+import LoadingPage from '../pages/LoadingPage.vue';
 import NotFoundPage from '../pages/404.vue';
+import PredictingPage from '../pages/PredictingPage.vue';
 
-var routes = [
+const routes = [
   {
     path: '/',
-    component: HomePage,
+    component: LoadingPage,
+  },
+  {
+    path: '/predicting',
+    component: PredictingPage,
   },
   {
     path: '(.*)',
     component: NotFoundPage,
-  }
+  },
 ];
 
 export default routes;
