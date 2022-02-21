@@ -1,15 +1,5 @@
 <template>
   <f7-app v-bind="f7params">
-    <!-- Right panel with reveal effect-->
-    <f7-panel right reveal theme-dark>
-      <f7-view>
-        <f7-page>
-          <f7-navbar title="Right Panel"></f7-navbar>
-          <f7-block>{{ text }}</f7-block>
-        </f7-page>
-      </f7-view>
-    </f7-panel>
-
     <!-- Your main view, should have "view-main" class -->
     <f7-view main class="safe-areas" url="/"></f7-view>
   </f7-app>
@@ -32,14 +22,14 @@ export default {
       },
     };
 
-    function helloWorld() {
-      console.log('Hello World!');
+    function loadModel() {
+      console.log('Loading Model Started!');
     }
 
     onMounted(() => {
       f7ready(() => {
         // Call F7 APIs here
-        helloWorld();
+        loadModel();
       });
     });
 
@@ -48,7 +38,7 @@ export default {
     return {
       f7params,
       text,
-      helloWorld,
+      loadModel,
     };
   },
 };

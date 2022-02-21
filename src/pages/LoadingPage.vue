@@ -1,23 +1,27 @@
 <template>
   <f7-page name="LoadingPage">
-    <!-- Top Navbar -->
-    <f7-navbar>
-      <f7-nav-title>My App</f7-nav-title>
-      <f7-nav-right>
-        <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
-      </f7-nav-right>
-    </f7-navbar>
-    <!-- Page content-->
-    <f7-block-title class="text-align-center">Hello World!</f7-block-title>
-    <f7-block>
-      <f7-row>
-        <f7-col></f7-col>
-        <f7-col><f7-button large small fill @click="alertOnClick()">Click Me!</f7-button></f7-col>
-        <f7-col></f7-col>
-      </f7-row>
-    </f7-block>
+    <div class="loading-page">
+      <h1 class="loading-page__heading">Blink-To-Text</h1>
 
-    <a href="/predicting/"> go to Predicting page</a>
+      <img
+        class="loading-page__img"
+        src="../static/images/blink.png"
+        alt="eye_logo"
+      />
+      <f7-preloader
+        class="loading-page__spinner"
+        :size="35"
+        color="white"
+      ></f7-preloader>
+
+      <h3 class="loading-page__loading-text">
+        Please wait until the app<br />finishes loading...
+      </h3>
+
+      <p class="loading-page__app-info">
+        Created by Asial Corporation<br />App Version: 1.0.0
+      </p>
+    </div>
   </f7-page>
 </template>
 
