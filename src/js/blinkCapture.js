@@ -72,7 +72,7 @@ function getEAR(upper, lower) {
   );
 }
 
-async function renderPrediction() {
+async function startPrediciton() {
   if (rendering) {
     // Sending video to model for prediction
     const predictions = await model.estimateFaces({
@@ -117,7 +117,7 @@ const blinkCapture = {
   loadModel,
   setUpCamera,
   stopPrediction,
-  getBlinkPrediction: renderPrediction,
+  startPrediciton,
 };
 
 export default blinkCapture;
