@@ -16,8 +16,8 @@
       </div>
 
       <div class="predicting-page__btns-container">
-        <button class="predicting-page__start-capturing-btn" @click="playVideo">Start Capturing</button>
-        <button class="predicting-page__remove-letter-btn">Remove Letter</button>
+        <a class="predicting-page__start-capturing-btn">Start Capturing</a>
+        <a class="predicting-page__remove-letter-btn">Remove Letter</a>
       </div>
 
     </div>
