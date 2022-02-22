@@ -1,4 +1,6 @@
 $dark-grey: #616161;
+$medium-text: 22px;
+$small-text: 16px;
 
 @mixin page-container-style() {
     display: flex;
@@ -8,12 +10,30 @@ $dark-grey: #616161;
     height: 100%;
 }
 
+@mixin button-style() {
+    width: 140px;
+    height: 50px;
+    
+    font-size: $small-text;
+    font-weight: 600;
+
+    border-radius: 3px;
+    border: 3px solid #000000;
+    margin: 0 10px;
+}
+
+.app {
+    &__video {
+        display: none;
+    }
+}
+
 .loading-page {
     @include page-container-style();
 
     justify-content: center;
 
-    &__heading {
+    &__title {
         margin: 0;
         font-size: 50px;
         font-weight: 500;
@@ -36,7 +56,7 @@ $dark-grey: #616161;
 
     &__loading-text {
         margin: 0;
-        font-size: 22px;
+        font-size: $medium-text;
         font-weight: 400;
         color: $dark-grey;
     }
@@ -48,8 +68,79 @@ $dark-grey: #616161;
     &__app-info {
         position: absolute;
         bottom: 10px;
-        font-size: 16px;
+        font-size: $small-text;
         font-weight: 200;
         color: $dark-grey;
     }
+}
+
+.predicting-page {
+    @include page-container-style();
+
+    &__title {
+        margin: 40px 0 10px 0;
+        font-size: $medium-text;
+
+    }
+    
+    &__description {
+        font-size: $small-text;
+    }
+
+    &__video {
+        height: auto;
+        max-width: 80%;
+        max-height: 350px;
+        border: 3px solid $dark-grey;
+    }
+
+    &__recognized-blink-title {
+        color: $dark-grey;
+        font-size: $medium-text;
+        margin-bottom: 5px;
+    }
+
+    &__recognized-blink-container {
+        width: 80%;
+        min-height: 70px;
+        border: 3px solid $dark-grey;
+    }
+
+    &__recognized-text-title {
+        color: $dark-grey;
+        font-size: $medium-text;
+        margin-bottom: 5px;
+    }
+
+    &__recognized-text-container {
+        width: 80%;
+        min-height: 30px;
+        border: 3px solid $dark-grey;
+    }
+
+    &__btns-container {
+        display: flex;
+        margin-top: 30px;
+    }
+
+    &__start-capturing-btn {
+        @include button-style();
+        background-color: #000000;
+        color: #FFFFFF;
+
+        &:active {
+            transform: scale(1.03);
+            transition: 0.2s
+        }
+    }
+
+    &__remove-letter-btn {
+        @include button-style();
+
+        &:active {
+            transform: scale(1.03);
+            transition: 0.2s
+        }
+    }
+
 }
