@@ -42,7 +42,7 @@ export default {
           if (!predictionStarted) {
             predictionStarted = true;
             f7.views.current.router.navigate('/predicting', {
-              transition: 'f7-dive',
+              transition: 'f7-dive', clearPreviousHistory: true,
             });
           }
           requestAnimationFrame(predict);

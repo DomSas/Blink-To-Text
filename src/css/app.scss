@@ -8,18 +8,21 @@ $small-text: 16px;
     align-items: center;
     text-align: center;
     height: 100%;
+    overflow: auto;
 }
 
 @mixin button-style() {
     width: 140px;
-    height: 50px;
+    padding: 10px 0;
     
     font-size: $small-text;
     font-weight: 600;
+    color: black;
 
     border-radius: 3px;
     border: 3px solid #000000;
     margin: 0 10px;
+    background-color: #FFFFFF;
 }
 
 .app {
@@ -120,7 +123,8 @@ $small-text: 16px;
 
     &__btns-container {
         display: flex;
-        margin-top: 30px;
+        margin: 30px 0;
+
     }
 
     &__start-capturing-btn {
@@ -136,6 +140,54 @@ $small-text: 16px;
 
     &__remove-letter-btn {
         @include button-style();
+
+        &:active {
+            transform: scale(1.03);
+            transition: 0.2s
+        }
+    }
+
+}
+
+.morse-code-page {
+    @include page-container-style();
+
+    &__title {
+        margin: 40px 0 10px 0;
+        font-size: $medium-text;
+
+    }
+    
+    &__description {
+        font-size: $small-text;
+        max-width: 80%;
+    }
+
+    &__img {
+        height: auto;
+        max-width: 90%;
+        max-height: 350px;
+        
+        border: 3px solid $dark-grey;
+    }
+
+    &__how-title {
+        margin: 40px 0 10px 0;
+        font-size: $medium-text;
+
+    }
+    
+    &__how-description {
+        font-size: $small-text;
+        max-width: 80%;
+    }
+
+    &__btn {
+        @include button-style();
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 30px 0;
 
         &:active {
             transform: scale(1.03);
