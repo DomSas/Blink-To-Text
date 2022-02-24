@@ -1,8 +1,19 @@
-# Framework7-Vue3-Minimal Template
+# Blink-To-Text
+This project focuses on building hybrid application which converts the blinking of eyes to text. It implements [Face Landmark Detection](https://github.com/tensorflow/tfjs-models/tree/master/face-landmarks-detection) from Tensorflow.js to capture movement of the eyes, and uses Morse Code to translate short and long blinks to alphabet characters.
 
-## Start Project
+## How to start
+1. Download the project.
+2. Run `npm install` in the directory.
+3. Run `npm run dev` to start the project.
+4. If the browser opens url *0.0.0.0:8080*, change it to *localhost:8080*.
 
-Run `monaca preview` to preview the app.
+## How to use
+1. Wait until the model loads.
+2. When you see yourself, click *Start Capturing* button.
+3. You have 7 seconds to blink the sequence you want.
+4. If the converted letter is wrong, delete it with *Remove Letter*.
+
+---
 
 ## WebPack
 
