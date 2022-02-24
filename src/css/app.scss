@@ -105,8 +105,18 @@ $small-text: 16px;
 
     &__recognized-blink-container {
         width: 80%;
-        min-height: 70px;
+        min-height: 45px;
         border: 3px solid $dark-grey;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__recognized-blink-sequence {
+        margin: 5px;
+        font-size: $medium-text;
+        font-weight: 900;
     }
 
     &__recognized-text-title {
@@ -117,14 +127,21 @@ $small-text: 16px;
 
     &__recognized-text-container {
         width: 80%;
-        min-height: 30px;
+        min-height: 45px;
         border: 3px solid $dark-grey;
+    }
+
+    &__recognized-text-p {
+        margin: 7px;
+        font-size: $medium-text;
+        font-weight: 600;
     }
 
     &__btns-container {
         display: flex;
+        justify-content: center;
+        width: 80%;
         margin: 30px 0;
-
     }
 
     &__start-capturing-btn {
@@ -133,17 +150,30 @@ $small-text: 16px;
         color: #FFFFFF;
 
         &:active {
-            transform: scale(1.03);
-            transition: 0.2s
+            transform: scale(0.99);
+            transition: 0.1s
         }
     }
+
+    &__stop-capturing-btn {
+        @include button-style();
+        background-color: $dark-grey;
+        border-color: $dark-grey;
+        color: #FFFFFF;
+        animation: pulse 1s infinite;
+
+        &:active {
+            transform: scale(0.99);
+            transition: 0.1s
+        }
+    }   
 
     &__remove-letter-btn {
         @include button-style();
 
         &:active {
-            transform: scale(1.03);
-            transition: 0.2s
+            transform: scale(0.99);
+            transition: 0.1s
         }
     }
 
@@ -195,4 +225,16 @@ $small-text: 16px;
         }
     }
 
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+  }
+	50% {
+		transform: scale(1.03);
+	}
+  100% {
+		transform: scale(1);
+	}
 }
