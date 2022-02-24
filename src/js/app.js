@@ -15,6 +15,8 @@ import '../css/icons.scss';
 import '../css/app.scss';
 
 // Import App Component
+import { createPinia } from 'pinia';
+// Import Pinia for store
 import App from '../components/app.vue';
 
 // Init Framework7-Vue Plugin
@@ -28,3 +30,4 @@ registerComponents(app);
 
 // Mount the App
 app.mount('#app');
+app.use(createPinia());

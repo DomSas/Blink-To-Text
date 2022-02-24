@@ -7,7 +7,7 @@
 
         <h3 class="morse-code-page__how-title" @click="playVideo">How to Use</h3>
         <p class="morse-code-page__how-description">
-            Click on Start Capturing and you will have 10 seconds to blink one character. <br/>
+            Click on Start Capturing and you will have 7 seconds to blink one character. <br/>
             If you want to delete the last character, click Remove Letter.
         </p>
         <a class="morse-code-page__btn back" href="/">Back</a>

@@ -6,11 +6,12 @@
   </f7-app>
 </template>
 <script>
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { f7, f7ready } from 'framework7-vue';
 
 import routes from '../js/routes';
-import blinkCapture from '../js/blinkCapture';
+import blinkCapture from '../js/blinkPrediction';
+import { useBlinkStore } from '../store/blinkStore';
 
 export default {
   setup() {
@@ -30,19 +31,25 @@ export default {
         await blinkCapture.loadModel();
         await blinkCapture.setUpCamera(videoElement);
 
+        // Moved after loading model to have time to initialize Pinia
+        const blinkStore = useBlinkStore();
+
         const predict = async () => {
           const result = await blinkCapture.startPrediciton();
           if (result) {
             if (result.longBlink) {
               console.log('long blink');
+              blinkStore.setBlinkSequence('-');
             } else if (result.blink) {
+              blinkStore.setBlinkSequence('.');
               console.log('short blink');
             }
           }
           if (!predictionStarted) {
             predictionStarted = true;
             f7.views.current.router.navigate('/predicting', {
-              transition: 'f7-dive', clearPreviousHistory: true,
+              transition: 'f7-dive',
+              clearPreviousHistory: true,
             });
           }
           requestAnimationFrame(predict);
@@ -52,11 +59,8 @@ export default {
       });
     });
 
-    const text = ref('Right panel content goes here');
-
     return {
       f7params,
-      text,
     };
   },
 };
