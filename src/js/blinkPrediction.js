@@ -1,12 +1,11 @@
 import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection';
 import '@tensorflow/tfjs-backend-webgl';
 
-let model; let video; let
-  event;
-const VIDEO_SIZE = 500;
-let blinkCount = 0;
-let rendering = true;
+const rendering = true;
 const EAR_THRESHOLD = 0.27;
+let model;
+let event;
+let blinkCount = 0;
 
 // Loading model from Tensorflow.js
 const loadModel = async () => {
@@ -15,43 +14,6 @@ const loadModel = async () => {
     { maxFaces: 1 },
   );
 };
-
-const setUpCamera = async (videoElement) => {
-  video = videoElement;
-  const mediaDevices = await navigator.mediaDevices.enumerateDevices();
-
-  const defaultWebcam = mediaDevices.find(
-    (device) => device.kind === 'videoinput' && device.label.includes('Built-in'),
-  );
-
-  const cameraId = defaultWebcam ? defaultWebcam?.deviceId : undefined;
-
-  const stream = await navigator.mediaDevices.getUserMedia({
-    audio: false,
-    video: {
-      facingMode: 'user',
-      deviceId: cameraId,
-      width: VIDEO_SIZE,
-      height: VIDEO_SIZE,
-    },
-  });
-
-  video.srcObject = stream;
-  video.play();
-  video.width = VIDEO_SIZE;
-  video.height = VIDEO_SIZE;
-
-  // Change it, since it does not expect anything to return
-  return new Promise((resolve) => {
-    video.onloadedmetadata = () => {
-      resolve(video);
-    };
-  });
-};
-
-function stopPrediction() {
-  rendering = false;
-}
 
 // Calculate the position of eyelid to predict a blink
 function getEAR(upper, lower) {
@@ -72,7 +34,7 @@ function getEAR(upper, lower) {
   );
 }
 
-async function startPrediciton() {
+async function startPrediciton(video) {
   if (rendering) {
     // Sending video to model for prediction
     const predictions = await model.estimateFaces({
@@ -115,8 +77,6 @@ async function startPrediciton() {
 
 const blinkCapture = {
   loadModel,
-  setUpCamera,
-  stopPrediction,
   startPrediciton,
 };
 
