@@ -8,11 +8,22 @@
         Long blink - dash
       </p>
       <video
+        v-if="!isPhone"
         class="predicting-page__video"
         id="predicting-page__video"
+        ref="videoRef"
         playsinline
         autoplay
       ></video>
+      <img
+        v-else
+        class="predicting-page__img"
+        id="predicting-page__img"
+        ref="imageRef"
+        width="224"
+        height="224"
+        src="../static/images/blink.png"
+      />
 
       <p class="predicting-page__recognized-blink-title">Recognized blink:</p>
       <div class="predicting-page__recognized-blink-container">
@@ -58,33 +69,91 @@
 <script>
 import { onMounted, ref } from 'vue';
 import { useBlinkStore } from '../store/blinkStore';
+import blinkCapture from '../js/blinkPrediction';
+import hybridFunctions from '../js/hybridFunctions';
 
 export default {
   setup() {
     const videoRef = ref(null);
-
+    const imageRef = ref(null);
+    const isPhone = ref(null);
     const blinkStore = useBlinkStore();
 
-    const playVideo = () => {
-      const video = document.getElementById('predicting-page__video');
-
-      if (!isMobile()) {
-        navigator.mediaDevices
-          .getUserMedia({
-            audio: false,
-            video: {
-              facingMode: 'user',
-              width: 500,
-              height: 500,
-            },
-          })
+    const playVideo = async () => {
+      if (!hybridFunctions.isMobile()) {
+        hybridFunctions
+          .getBrowserCamera()
           .then((stream) => {
-            video.srcObject = stream;
+            videoRef.value.srcObject = stream;
           })
           .catch((err) => {
             console.log('Something went wrong!', err);
           });
+
+        return new Promise((resolve) => {
+          videoRef.value.onloadedmetadata = () => {
+            resolve();
+          };
+        });
       }
+      const options = {
+        canvas: {
+          width: 224,
+          height: 224,
+        },
+        capture: {
+          width: 224,
+          height: 224,
+        },
+        use: 'file',
+        fps: 30,
+        hasThumbnail: false,
+        cameraFacing: 'front',
+      };
+      window.plugin.CanvasCamera.start(
+        options,
+        async (err) => {
+          console.log('Something went wrong!', err);
+        },
+        async (stream) => {
+          readImageFile(stream);
+        },
+      );
+    };
+
+    const readImageFile = (data) => {
+      // set file protocol
+      const protocol = 'file://';
+      let filepath = '';
+      if (hybridFunctions.isAndroid()) {
+        filepath = protocol + data.output.images.fullsize.file;
+      } else {
+        filepath = data.output.images.fullsize.file;
+      }
+      // read image from local file and assign to image element
+      window.resolveLocalFileSystemURL(
+        filepath,
+        async (fileEntry) => {
+          fileEntry.file(
+            (file) => {
+              const reader = new FileReader();
+              reader.onloadend = async () => {
+                const blob = new Blob([new Uint8Array(reader.result)], {
+                  type: 'image/png',
+                });
+                imageRef.value.src = window.URL.createObjectURL(blob);
+              };
+              reader.readAsArrayBuffer(file);
+            },
+            (err) => {
+              console.log('read', err);
+            },
+          );
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
     };
 
     const startCapturing = () => {
@@ -98,27 +167,37 @@ export default {
       blinkStore.removeLastLetter();
     };
 
-    const isAndroid = () => {
-      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-      if (/android/i.test(userAgent)) return true;
-      return false;
-    };
+    onMounted(async () => {
+      isPhone.value = hybridFunctions.isMobile();
+      await playVideo();
 
-    const isIos = () => {
-      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-      if (/iPad|iPhone|iPod/i.test(userAgent)) return true;
-      return false;
-    };
+      const predict = async () => {
+        let result;
+        if (hybridFunctions.isMobile() && imageRef.value.src) {
+          result = await blinkCapture.startPrediciton(imageRef.value);
+        } else if (videoRef.value.srcObject != null) {
+          result = await blinkCapture.startPrediciton(videoRef.value);
+        }
+        if (result) {
+          if (result.longBlink) {
+            console.log('long blink');
+            blinkStore.setBlinkSequence('-');
+          } else if (result.blink) {
+            blinkStore.setBlinkSequence('.');
+            console.log('short blink');
+          }
+        }
+        requestAnimationFrame(predict);
+      };
 
-    const isMobile = () => window.cordova && (isAndroid() || isIos());
-
-    onMounted(() => {
-      playVideo();
+      predict();
     });
 
     return {
       blinkStore,
+      imageRef,
       videoRef,
+      isPhone,
       startCapturing,
       stopCapturing,
       removeLastLetter,
