@@ -58,13 +58,13 @@ async function startPrediciton(video) {
         // Determine how long you blinked
         if (blinked) {
           event = {
-            blink: false,
+            shortBlink: false,
             longBlink: false,
           };
           blinkCount += 1;
         } else {
           event = {
-            blink: blinkCount <= 5 && blinkCount !== 0,
+            shortBlink: blinkCount <= 5 && blinkCount !== 0,
             longBlink: blinkCount > 5,
           };
           blinkCount = 0;

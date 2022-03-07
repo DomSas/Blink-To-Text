@@ -14,7 +14,6 @@
 <script>
 import { onMounted, ref } from 'vue';
 import { f7, f7ready } from 'framework7-vue';
-
 import routes from '../js/routes';
 import blinkCapture from '../js/blinkPrediction';
 
@@ -28,7 +27,6 @@ export default {
     };
     const imageRef = ref(null);
 
-    // Loading model and starting capturing blinking
     onMounted(() => {
       f7ready(async () => {
         await blinkCapture.loadModel();

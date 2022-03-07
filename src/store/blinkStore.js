@@ -28,7 +28,7 @@ export const useBlinkStore = defineStore('blinkStore', {
     },
     startCapturingBlinks() {
       this.capturing = true;
-
+      // 7 seconds countdown for capturing the blinks
       this.timer = setTimeout(() => {
         this.convertCapturedSequence();
       }, 7000);

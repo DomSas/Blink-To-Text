@@ -65,7 +65,6 @@
     </div>
   </f7-page>
 </template>
-
 <script>
 import { onMounted, ref } from 'vue';
 import { useBlinkStore } from '../store/blinkStore';
@@ -96,69 +95,15 @@ export default {
           };
         });
       }
-      const options = {
-        canvas: {
-          width: 224,
-          height: 224,
-        },
-        capture: {
-          width: 224,
-          height: 224,
-        },
-        use: 'file',
-        fps: 30,
-        hasThumbnail: false,
-        cameraFacing: 'front',
-      };
-      window.plugin.CanvasCamera.start(
-        options,
-        async (err) => {
-          console.log('Something went wrong!', err);
-        },
-        async (stream) => {
-          readImageFile(stream);
-        },
-      );
-    };
-
-    const readImageFile = (data) => {
-      // set file protocol
-      const protocol = 'file://';
-      let filepath = '';
-      if (hybridFunctions.isAndroid()) {
-        filepath = protocol + data.output.images.fullsize.file;
-      } else {
-        filepath = data.output.images.fullsize.file;
-      }
-      // read image from local file and assign to image element
-      window.resolveLocalFileSystemURL(
-        filepath,
-        async (fileEntry) => {
-          fileEntry.file(
-            (file) => {
-              const reader = new FileReader();
-              reader.onloadend = async () => {
-                const blob = new Blob([new Uint8Array(reader.result)], {
-                  type: 'image/png',
-                });
-                imageRef.value.src = window.URL.createObjectURL(blob);
-              };
-              reader.readAsArrayBuffer(file);
-            },
-            (err) => {
-              console.log('read', err);
-            },
-          );
-        },
-        (error) => {
-          console.log(error);
-        },
-      );
+      hybridFunctions.getMobileCamera((stream) => {
+        imageRef.value.src = stream;
+      });
     };
 
     const startCapturing = () => {
       blinkStore.startCapturingBlinks();
     };
+
     const stopCapturing = () => {
       blinkStore.stopCapturingBlinks();
     };
@@ -182,7 +127,7 @@ export default {
           if (result.longBlink) {
             console.log('long blink');
             blinkStore.setBlinkSequence('-');
-          } else if (result.blink) {
+          } else if (result.shortBlink) {
             blinkStore.setBlinkSequence('.');
             console.log('short blink');
           }
