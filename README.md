@@ -13,6 +13,18 @@ This project focuses on building hybrid application which converts the blinking 
 3. You have 7 seconds to blink the sequence you want.
 4. If the converted letter is wrong, delete it with *Remove Letter*.
 
+## Important files
+#### JS
+- `blinkPrediction.js` - Tensorflow.js model and prediction logic
+- `hybridFunctions.js` - functions for loading camera on browser/mobile
+- `morseCodeTable.js` - Morse Code dictionary
+- `blinkStore.js` - Pinia store containing state of the app
+
+#### Vue
+- `LoadingPage.vue` - first screen that user sees while loading the model
+- `MorseCodePage.vue` - helper screen to see Morse Code table
+- `PredictingPage.vue` - main screen where predicting is happening
+
 ---
 
 ## WebPack
