@@ -14,9 +14,9 @@ import 'framework7/framework7-bundle.css';
 import '../css/icons.scss';
 import '../css/app.scss';
 
-// Import App Component
-import { createPinia } from 'pinia';
 // Import Pinia for store
+import { createPinia } from 'pinia';
+// Import App Component
 import App from '../components/app.vue';
 
 // Init Framework7-Vue Plugin

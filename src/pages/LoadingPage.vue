@@ -2,7 +2,6 @@
   <f7-page name="LoadingPage">
     <div class="loading-page">
       <h1 class="loading-page__title">Blink-To-Text</h1>
-
       <img
         class="loading-page__img"
         src="../static/images/blink.png"
@@ -13,7 +12,6 @@
         :size="35"
         color="white"
       ></f7-preloader>
-
       <h3 class="loading-page__loading-text">
         Please wait until the app<br />finishes loading...
       </h3>

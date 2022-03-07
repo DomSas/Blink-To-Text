@@ -8,10 +8,22 @@
         Long blink - dash
       </p>
       <video
+        v-if="!isPhone"
         class="predicting-page__video"
         id="predicting-page__video"
+        ref="videoRef"
         playsinline
+        autoplay
       ></video>
+      <img
+        v-else
+        class="predicting-page__img"
+        id="predicting-page__img"
+        ref="imageRef"
+        width="224"
+        height="224"
+        src="../static/images/blink.png"
+      />
 
       <p class="predicting-page__recognized-blink-title">Recognized blink:</p>
       <div class="predicting-page__recognized-blink-container">
@@ -53,39 +65,45 @@
     </div>
   </f7-page>
 </template>
-
 <script>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useBlinkStore } from '../store/blinkStore';
+import blinkCapture from '../js/blinkPrediction';
+import hybridFunctions from '../js/hybridFunctions';
 
 export default {
   setup() {
+    const videoRef = ref(null);
+    const imageRef = ref(null);
+    const isPhone = ref(null);
     const blinkStore = useBlinkStore();
 
-    const playVideo = () => {
-      const video = document.getElementById('predicting-page__video');
+    const playVideo = async () => {
+      if (!hybridFunctions.isMobile()) {
+        hybridFunctions
+          .getBrowserCamera()
+          .then((stream) => {
+            videoRef.value.srcObject = stream;
+          })
+          .catch((err) => {
+            console.log('Something went wrong!', err);
+          });
 
-      navigator.mediaDevices
-        .getUserMedia({
-          audio: false,
-          video: {
-            facingMode: 'user',
-            width: 500,
-            height: 500,
-          },
-        })
-        .then((stream) => {
-          video.srcObject = stream;
-          video.play();
-        })
-        .catch((err) => {
-          console.log('Something went wrong!', err);
+        return new Promise((resolve) => {
+          videoRef.value.onloadedmetadata = () => {
+            resolve();
+          };
         });
+      }
+      hybridFunctions.getMobileCamera((stream) => {
+        imageRef.value.src = stream;
+      });
     };
 
     const startCapturing = () => {
       blinkStore.startCapturingBlinks();
     };
+
     const stopCapturing = () => {
       blinkStore.stopCapturingBlinks();
     };
@@ -94,12 +112,37 @@ export default {
       blinkStore.removeLastLetter();
     };
 
-    onMounted(() => {
-      playVideo();
+    onMounted(async () => {
+      isPhone.value = hybridFunctions.isMobile();
+      await playVideo();
+
+      const predict = async () => {
+        let result;
+        if (hybridFunctions.isMobile() && imageRef.value.src) {
+          result = await blinkCapture.startPrediciton(imageRef.value);
+        } else if (videoRef.value.srcObject != null) {
+          result = await blinkCapture.startPrediciton(videoRef.value);
+        }
+        if (result) {
+          if (result.longBlink) {
+            console.log('long blink');
+            blinkStore.setBlinkSequence('-');
+          } else if (result.shortBlink) {
+            blinkStore.setBlinkSequence('.');
+            console.log('short blink');
+          }
+        }
+        requestAnimationFrame(predict);
+      };
+
+      predict();
     });
 
     return {
       blinkStore,
+      imageRef,
+      videoRef,
+      isPhone,
       startCapturing,
       stopCapturing,
       removeLastLetter,
