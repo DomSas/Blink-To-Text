@@ -58,22 +58,21 @@ const readImageFile = (data, callback) => {
 };
 
 const getMobileCamera = async (callback) => {
-  const options = {
-    canvas: {
-      width: 224,
-      height: 224,
-    },
-    capture: {
-      width: 224,
-      height: 224,
-    },
-    use: 'file',
-    fps: 30,
-    hasThumbnail: false,
-    cameraFacing: 'front',
-  };
   window.plugin.CanvasCamera.start(
-    options,
+    {
+      canvas: {
+        width: 224,
+        height: 224,
+      },
+      capture: {
+        width: 224,
+        height: 224,
+      },
+      use: 'file',
+      fps: 30,
+      hasThumbnail: false,
+      cameraFacing: 'front',
+    },
     async (err) => {
       console.log('Something went wrong!', err);
     },

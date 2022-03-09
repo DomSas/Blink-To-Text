@@ -1,7 +1,6 @@
 import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection';
 import '@tensorflow/tfjs-backend-webgl';
 
-const rendering = true;
 const EAR_THRESHOLD = 0.27;
 let model;
 let event;
@@ -35,42 +34,40 @@ function getEAR(upper, lower) {
 }
 
 async function startPrediciton(video) {
-  if (rendering) {
-    // Sending video to model for prediction
-    const predictions = await model.estimateFaces({
-      input: video,
+  // Sending video to model for prediction
+  const predictions = await model.estimateFaces({
+    input: video,
+  });
+
+  if (predictions.length > 0) {
+    predictions.forEach((prediction) => {
+      // Right eye parameters
+      const lowerRight = prediction.annotations.rightEyeUpper0;
+      const upperRight = prediction.annotations.rightEyeLower0;
+      const rightEAR = getEAR(upperRight, lowerRight);
+      // Left eye parameters
+      const lowerLeft = prediction.annotations.leftEyeUpper0;
+      const upperLeft = prediction.annotations.leftEyeLower0;
+      const leftEAR = getEAR(upperLeft, lowerLeft);
+
+      // True if the eye is closed
+      const blinked = leftEAR <= EAR_THRESHOLD && rightEAR <= EAR_THRESHOLD;
+
+      // Determine how long you blinked
+      if (blinked) {
+        event = {
+          shortBlink: false,
+          longBlink: false,
+        };
+        blinkCount += 1;
+      } else {
+        event = {
+          shortBlink: blinkCount <= 5 && blinkCount !== 0,
+          longBlink: blinkCount > 5,
+        };
+        blinkCount = 0;
+      }
     });
-
-    if (predictions.length > 0) {
-      predictions.forEach((prediction) => {
-        // Right eye parameters
-        const lowerRight = prediction.annotations.rightEyeUpper0;
-        const upperRight = prediction.annotations.rightEyeLower0;
-        const rightEAR = getEAR(upperRight, lowerRight);
-        // Left eye parameters
-        const lowerLeft = prediction.annotations.leftEyeUpper0;
-        const upperLeft = prediction.annotations.leftEyeLower0;
-        const leftEAR = getEAR(upperLeft, lowerLeft);
-
-        // True if the eye is closed
-        const blinked = leftEAR <= EAR_THRESHOLD && rightEAR <= EAR_THRESHOLD;
-
-        // Determine how long you blinked
-        if (blinked) {
-          event = {
-            shortBlink: false,
-            longBlink: false,
-          };
-          blinkCount += 1;
-        } else {
-          event = {
-            shortBlink: blinkCount <= 5 && blinkCount !== 0,
-            longBlink: blinkCount > 5,
-          };
-          blinkCount = 0;
-        }
-      });
-    }
   }
   return event;
 }
