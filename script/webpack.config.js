@@ -11,7 +11,7 @@ const path = require('path');
 const argvs = require('yargs').argv;
 
 const DEFAULT_PORT = 8080;
-const host = process.env.MONACA_SERVER_HOST || argvs.host || '0.0.0.0';
+const host = process.env.MONACA_SERVER_HOST || argvs.host || 'localhost';
 const port = argvs.port || DEFAULT_PORT;
 const wss = process.env.MONACA_TERMINAL ? true : false;
 const socketPort = port + 1; //it is used for webpack-hot-client
@@ -45,14 +45,16 @@ module.exports = {
   },
   devtool: env === 'production' ? 'source-map' : 'eval',
   devServer: {
+    static: {
+      directory: '/www/',
+    },
     hot: true,
-    host: host,
-    port: port,
+    host,
+    port,
     open: true,
     compress: true,
-    contentBase: '/www/',
-    disableHostCheck: true,
-    historyApiFallback: true
+    allowedHosts: 'all',
+    historyApiFallback: true,
   },
   optimization: {
     concatenateModules: true,
@@ -69,7 +71,7 @@ module.exports = {
           {
             loader: require.resolve('babel-loader'),
           },
-        ]
+        ],
       },
       {
         test: /\.vue$/,
@@ -81,8 +83,8 @@ module.exports = {
           (env === 'development' ? 'style-loader' : {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              publicPath: '../'
-            }
+              publicPath: '../',
+            },
           }),
           'css-loader',
           'postcss-loader',
@@ -94,8 +96,8 @@ module.exports = {
           (env === 'development' ? 'style-loader' : {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              publicPath: '../'
-            }
+              publicPath: '../',
+            },
           }),
           'css-loader',
           'postcss-loader',
@@ -108,8 +110,8 @@ module.exports = {
           (env === 'development' ? 'style-loader' : {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              publicPath: '../'
-            }
+              publicPath: '../',
+            },
           }),
           'css-loader',
           'postcss-loader',
@@ -122,8 +124,8 @@ module.exports = {
           (env === 'development' ? 'style-loader' : {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              publicPath: '../'
-            }
+              publicPath: '../',
+            },
           }),
           'css-loader',
           'postcss-loader',
@@ -138,7 +140,7 @@ module.exports = {
           name: 'images/[name].[ext]',
 
         },
-        type: 'javascript/auto'
+        type: 'javascript/auto',
       },
       {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac|m4a)(\?.*)?$/,
@@ -148,7 +150,7 @@ module.exports = {
           name: 'media/[name].[ext]',
 
         },
-        type: 'javascript/auto'
+        type: 'javascript/auto',
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
@@ -158,7 +160,7 @@ module.exports = {
           name: 'fonts/[name].[ext]',
 
         },
-        type: 'javascript/auto'
+        type: 'javascript/auto',
       },
     ],
   },
@@ -182,7 +184,7 @@ module.exports = {
           removeRedundantAttributes: true,
           removeScriptTypeAttributes: true,
           removeStyleLinkTypeAttributes: true,
-          useShortDoctype: true
+          useShortDoctype: true,
         } : false,
       }),
     ] : [
