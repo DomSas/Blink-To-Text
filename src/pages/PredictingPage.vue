@@ -95,9 +95,11 @@ export default {
           };
         });
       }
-      hybridFunctions.getMobileCamera((stream) => {
-        imageRef.value.src = stream;
-      });
+      document.addEventListener('deviceready', async () => {
+        await hybridFunctions.getMobileCamera((stream) => {
+          imageRef.value.src = stream;
+        });
+      }, false);
     };
 
     const startCapturing = () => {
