@@ -79,7 +79,7 @@ export default {
     const blinkStore = useBlinkStore();
 
     const playVideo = async () => {
-      if (!hybridFunctions.isMobile()) {
+      if (!hybridFunctions.isIos()) {
         hybridFunctions
           .getBrowserCamera()
           .then((stream) => {
@@ -115,12 +115,12 @@ export default {
     };
 
     onMounted(async () => {
-      isPhone.value = hybridFunctions.isMobile();
+      isPhone.value = hybridFunctions.isIos();
       await playVideo();
 
       const predict = async () => {
         let result;
-        if (hybridFunctions.isMobile() && imageRef.value.src) {
+        if (hybridFunctions.isIos() && imageRef.value.src) {
           result = await blinkCapture.startPrediciton(imageRef.value);
         } else if (videoRef.value.srcObject != null) {
           result = await blinkCapture.startPrediciton(videoRef.value);

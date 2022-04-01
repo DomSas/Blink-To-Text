@@ -17,8 +17,8 @@ const getBrowserCamera = () => navigator.mediaDevices
     audio: false,
     video: {
       facingMode: 'user',
-      width: 500,
-      height: 500,
+      width: 224,
+      height: 224,
     },
   });
 
