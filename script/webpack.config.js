@@ -13,8 +13,7 @@ const argvs = require('yargs').argv;
 const DEFAULT_PORT = 8080;
 const host = process.env.MONACA_SERVER_HOST || argvs.host || 'localhost';
 const port = argvs.port || DEFAULT_PORT;
-const wss = process.env.MONACA_TERMINAL ? true : false;
-const socketPort = port + 1; //it is used for webpack-hot-client
+const socketProtocol = process.env.MONACA_TERMINAL ? 'wss' : 'ws';
 
 function resolvePath(dir) {
   return path.join(__dirname, '..', dir);
@@ -48,13 +47,15 @@ module.exports = {
     static: {
       directory: '/www/',
     },
-    hot: true,
     host,
     port,
     open: true,
     compress: true,
     allowedHosts: 'all',
     historyApiFallback: true,
+    client: {
+      webSocketURL: `${socketProtocol}://${host}:${port}/ws`,
+    },
   },
   optimization: {
     concatenateModules: true,
@@ -189,7 +190,6 @@ module.exports = {
       }),
     ] : [
       // Development only plugins
-      new webpack.HotModuleReplacementPlugin(),
       new HtmlWebpackPlugin({
         filename: './index.html',
         template: './src/public/index.html.ejs',
