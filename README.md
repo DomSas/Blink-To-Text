@@ -2,7 +2,7 @@
 This project focuses on building hybrid application which converts the blinking of eyes to text. It implements [Face Landmark Detection](https://github.com/tensorflow/tfjs-models/tree/master/face-landmarks-detection) from Tensorflow.js to capture movement of the eyes, and uses Morse Code to translate short and long blinks to alphabet characters.
 
 Technologies used: 
-- Frontend: Vue.js (Pinia for state management).
+- Frontend: Vue.js (Pinia for state management) + SCSS (BEM).
 - ML: Tensorflow.js.
 - Hybrid deployment: Monaca.
 
