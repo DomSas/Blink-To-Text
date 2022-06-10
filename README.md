@@ -1,6 +1,15 @@
 # Blink-To-Text
 This project focuses on building hybrid application which converts the blinking of eyes to text. It implements [Face Landmark Detection](https://github.com/tensorflow/tfjs-models/tree/master/face-landmarks-detection) from Tensorflow.js to capture movement of the eyes, and uses Morse Code to translate short and long blinks to alphabet characters.
 
+Technologies used: 
+- Frontend: Vue.js (Pinia for state management).
+- ML: Tensorflow.js.
+- Hybrid deployment: Monaca.
+
+https://user-images.githubusercontent.com/62658199/173062159-b8610dfe-c462-4817-b3d5-35401e0b4ffc.mp4
+
+[Figma wireframe](https://www.figma.com/file/I5GdkW2B4AzpY0vUUbVp7n/Blinking-to-Text?node-id=0%3A1).  
+
 ## Tutorial
 There is a tutorial available in Medium: [Recognising Eye Blinking With Tensorflow.js](https://medium.com/the-web-tub/recognising-eye-blinking-with-tensorflow-js-3c02b738850d)
 
